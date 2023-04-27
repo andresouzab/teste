@@ -1,3 +1,5 @@
+// Exemplo para entender como o servidor funciona, Não tem o Express.
+
 const http = require('http'); // importa uma biblioteca http com os protocolos da internet
 
 //ip e porta do servidor 
@@ -9,6 +11,7 @@ const server = http.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.end('Bem vindo Andre');
 });
+
 
 // servidor escutando/rodando na porta.
 server.listen(port, hostname, () => {

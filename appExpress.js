@@ -1,9 +1,15 @@
 // Aplicação com framework Express Instalado
 // Será usado daqui para frente esse aqui.
-
 const express = require('express')
 const app = express()
 const port = 3000
+
+//Arquivo com rotas para o cadastro de livros
+const livros = require('./routes/livros.js');
+
+//identificação da rota e da const (require) associada
+app.use('/livros',livros);
+//a rota /livros retorna a lista dos livros cadastrados em formato json
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -29,3 +35,4 @@ app.post('/livros', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+

@@ -3,6 +3,10 @@
 const express = require('express')
 const app = express()
 const port = 3000
+//faz a conversão de JSON para JS
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //Arquivo com rotas para o cadastro de livros
 const livros = require('./routes/livros.js');

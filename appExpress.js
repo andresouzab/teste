@@ -15,6 +15,12 @@ const livros = require('./routes/livros.js');
 app.use('/livros',livros);
 //a rota /livros retorna a lista dos livros cadastrados em formato json
 
+const autores = require('./routes/autores.js');
+app.use('/autores',autores);
+
+const editoras = require('./routes/editoras.js');
+app.use('/editoras',editoras);
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })

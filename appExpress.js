@@ -2,7 +2,14 @@
 // Será usado daqui para frente esse aqui.
 const express = require('express')
 const app = express()
-const port = 3000
+// declarado cors para dar permissão para o back e o front se comunicarem
+const cors = require('cors');
+const port = 3001 // Alterado a porta para rodar no servidor do outro código de frontend
+
+// usando o cors
+app.use(cors());
+
+
 //faz a conversão de JSON para JS
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());

@@ -62,5 +62,35 @@ router.delete("/:id",async(req,res) => {
         res.status(400).json({msg:error.message}); //retorna status de erro e msg
     }
 });
+
+//Filtro por titulo ou por autor
+router.get("/filtro/:palavra", async(req,res)=> {
+    const palavra = req.params.palavra; // palavra ou titulo a pesquisar
+    try{
+            const livros = await dbKnex("livros")
+            .where("titulo","like", `%${palavra}%`)
+            .orWhere("autor","like",`%${palavra}%`);
+            res.status(200).json(livros); //retorna statusCode ok e os dados
+        }catch(error){
+            res.status(400).json({msg:error.message}); //retorna status de erro e msg
+        }
+});
+
+//Resumo do cadastro de livros
+router.get("/dados/resumo",async (req,res) =>{
+    try{
+        const livros = await dbKnex("livros")
+        .count({num: "*"})
+        .sum({soma: "preco"})
+        .max({maior: "preco"})
+        .avg({media: "preco"});
+        const {num,soma,maior,media} = livros[0];
+        res.status(200).json({num,soma,maior,media:Number(media.toFixed(2))});
+    }catch(error){
+        res.status(400).json({msg:error.message}); //retorna status de erro e msg
+    }
+})
+
+
 module.exports = router;
 

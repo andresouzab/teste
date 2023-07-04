@@ -91,6 +91,28 @@ router.get("/dados/resumo",async (req,res) =>{
     }
 })
 
+//Exibir o gráfico com a soma dos preços agrupados por ano:
+
+router.get("/dados/grafico",async (req, res) =>{
+    try{
+        //obtém ano e soma do preço dos livros, agrupados por ano
+        const totalPorAno = await dbKnex("livros").select("ano")
+        .sum({total:"preco"}).groupBy("ano");
+        res.status(200).json(totalPorAno);
+    }catch(error){
+        res.status(400).json({msg:error.message}); //retorna status de erro e msg
+}})
+
+// router.get("/dados/grafico",async (req, res) =>{
+//     try{
+//         //obtém ano e soma a quntidade dos livros, agrupados por ano
+//         const qtdTotalPorAno = await dbKnex("livros").select("ano")
+//         .count({total:"livros"}).groupBy("ano");
+//         res.status(200).json(qtdTotalPorAnototalPorAno);
+//     }catch(error){
+//         res.status(400).json({msg:error.message}); //retorna status de erro e msg
+// }})
+
 
 module.exports = router;
 

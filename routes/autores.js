@@ -2,19 +2,22 @@
 const express = require("express");
 //Importando o framework express.Router
 const router = express.Router();
-
 //Dados de conexão com Bando de Dados
-const dbKnex = require("../data/db_config"); //dados de conexão com o bd
+const Autores =  require("../models/autores"); //dados de conexão com o bd
 
 
 //método get é usado para consulta
 router.get("/",async(req,res) => {
     try{
         //para obter os autores pode-se utilizar .select().orderBy() ou apenas .orderBy()
-        const autores = await dbKnex("autores").orderBy("id","desc");
-        res.status(200).json(autores); //retorna statusCode ok e os dados
+        const autores = await Autores.findByPk(req.params.id);
+        if(!autores){
+            res.status(400).json({sucess:false.message:"Tarefa não encontrada."}); 
+        }else{
+            res.json({sucess:true,autores: autores});
+        }        
     }catch(error){
-        res.status(400).json({msg:error.message}); //retorna status de erro e msg
+        res.status(500).json({sucess:false,message:error.message}); //retorna status de erro e msg
     }
 });
 
@@ -30,8 +33,16 @@ router.post("/",async (req,res)=>{
     }
     //caso ocorra algum erro na inclusão, o programa irá capturar(catch) o erro
     try{
+        const autores = new Autores({
+            nome:nome,
+            sobrenome:sobrenome,
+            idade:idade,
+            nascimento:nascimento,
+            sexo:sexo,
+            telefone:telefone 
+        });
         //insert, faz a inserção na tabela autores(e retorna o id do registro inserido)
-        const novo = await dbKnex("autores").insert({nome, sobrenome, idade, nascimento, sexo, telefone});
+        await autores.save();
         res.status(201).json({id:novo[0]}); //statuscode indica Create
     }catch(error){
         res.status(400).json({msg:error.message}); //retorna status de erro e msg
